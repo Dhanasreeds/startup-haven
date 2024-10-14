@@ -13,6 +13,7 @@ import DocumentUpload from "./pages/DocumentUpload";
 import ResourceHub from "./pages/ResourceHub";
 import RegistrationPortal from "./pages/RegistrationPortal";
 
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (
