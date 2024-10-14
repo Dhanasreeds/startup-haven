@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import DocumentUpload from "./pages/DocumentUpload";
 import ResourceHub from "./pages/ResourceHub";
+import ResourceDetail from "./pages/ResourceDetail";
 import RegistrationPortal from "./pages/RegistrationPortal";
 
 // Create a client
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/upload" element={<ProtectedRoute><DocumentUpload /></ProtectedRoute>} />
             <Route path="/resources" element={<ResourceHub />} />
+            <Route path="/resources/:resourceId" element={<ResourceDetail />} />
             <Route path="/register" element={<ProtectedRoute><RegistrationPortal /></ProtectedRoute>} />
           </Routes>
         </TooltipProvider>
