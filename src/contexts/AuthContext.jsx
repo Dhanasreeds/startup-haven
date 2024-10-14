@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const validateToken = async (token) => {
     try {
+      // Replace with your actual API endpoint for token validation
       const response = await axios.post('/api/validate-token', { token });
       if (response.data.valid) {
         setUser(response.data.user);
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
+      // Replace with your actual API endpoint for login
       const response = await axios.post('/api/login', credentials);
       const { token, user } = response.data;
       localStorage.setItem('token', token);
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }) => {
       navigate('/dashboard');
     } catch (error) {
       console.error('Login error:', error);
+      // Handle login error (e.g., show error message to user)
       throw error;
     }
   };
@@ -50,8 +53,18 @@ export const AuthProvider = ({ children }) => {
     navigate('/login');
   };
 
+  // Simulated login for development purposes
+  const simulatedLogin = (credentials) => {
+    console.log('Simulated login with:', credentials);
+    const fakeUser = { id: 1, name: 'John Doe', email: credentials.email };
+    const fakeToken = 'fake-jwt-token';
+    localStorage.setItem('token', fakeToken);
+    setUser(fakeUser);
+    navigate('/dashboard');
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login: simulatedLogin, logout }}>
       {children}
     </AuthContext.Provider>
   );
