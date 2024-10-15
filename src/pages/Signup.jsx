@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 
 const Signup = () => {
-  const navigate = useNavigate();
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    name: '',
+    company: '',
+    industry: '',
+    employees: ''
+  });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (step < 3) {
       setStep(step + 1);
     } else {
-      // Implement actual signup logic here
-      login({ id: 1, name: 'John Doe' });
-      navigate('/dashboard');
+      try {
+        await signup(formData);
+      } catch (error) {
+        console.error('Signup failed:', error);
+        // Handle signup error (e.g., show error message to user)
+      }
     }
   };
 
@@ -33,11 +46,11 @@ const Signup = () => {
               <>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                  <Input type="email" id="email" required className="mt-1" />
+                  <Input type="email" id="email" value={formData.email} onChange={handleChange} required className="mt-1" />
                 </div>
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                  <Input type="password" id="password" required className="mt-1" />
+                  <Input type="password" id="password" value={formData.password} onChange={handleChange} required className="mt-1" />
                 </div>
               </>
             )}
@@ -45,11 +58,11 @@ const Signup = () => {
               <>
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
-                  <Input type="text" id="name" required className="mt-1" />
+                  <Input type="text" id="name" value={formData.name} onChange={handleChange} required className="mt-1" />
                 </div>
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-gray-700">Company Name</label>
-                  <Input type="text" id="company" required className="mt-1" />
+                  <Input type="text" id="company" value={formData.company} onChange={handleChange} required className="mt-1" />
                 </div>
               </>
             )}
@@ -57,11 +70,11 @@ const Signup = () => {
               <>
                 <div>
                   <label htmlFor="industry" className="block text-sm font-medium text-gray-700">Industry</label>
-                  <Input type="text" id="industry" required className="mt-1" />
+                  <Input type="text" id="industry" value={formData.industry} onChange={handleChange} required className="mt-1" />
                 </div>
                 <div>
                   <label htmlFor="employees" className="block text-sm font-medium text-gray-700">Number of Employees</label>
-                  <Input type="number" id="employees" required className="mt-1" />
+                  <Input type="number" id="employees" value={formData.employees} onChange={handleChange} required className="mt-1" />
                 </div>
               </>
             )}

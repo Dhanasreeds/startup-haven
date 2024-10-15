@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import axios from 'axios';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const [documents, setDocuments] = useState([]);
+  const [registrationStatus, setRegistrationStatus] = useState('');
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const [documentsResponse, statusResponse] = await Promise.all([
+          axios.get('/api/user-documents'),
+          axios.get('/api/registration-status')
+        ]);
+        setDocuments(documentsResponse.data);
+        setRegistrationStatus(statusResponse.data.status);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   return (
     <div className="container mx-auto mt-8">
@@ -25,7 +45,15 @@ const Dashboard = () => {
             <CardTitle>Documents</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>You have 0 documents uploaded.</p>
+            {documents.length > 0 ? (
+              <ul>
+                {documents.map((doc, index) => (
+                  <li key={index}>{doc.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>You have no documents uploaded.</p>
+            )}
           </CardContent>
         </Card>
         <Card>
@@ -33,7 +61,7 @@ const Dashboard = () => {
             <CardTitle>Registration Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Your registration is incomplete.</p>
+            <p>{registrationStatus}</p>
           </CardContent>
         </Card>
         <Card>
