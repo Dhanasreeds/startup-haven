@@ -1,6 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -17,31 +16,22 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const validateToken = async (token) => {
-    try {
-      const response = await axios.post('/api/validate-token', { token });
-      if (response.data.valid) {
-        setUser(response.data.user);
-      } else {
-        logout();
-      }
-    } catch (error) {
-      console.error('Token validation error:', error);
+  const validateToken = (token) => {
+    // Mock token validation
+    if (token === 'mock-token') {
+      setUser({ id: 1, name: 'John Doe', email: 'john@example.com' });
+    } else {
       logout();
     }
   };
 
   const login = async (credentials) => {
-    try {
-      const response = await axios.post('/api/login', credentials);
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      navigate('/dashboard');
-    } catch (error) {
-      console.error('Login error:', error);
-      throw error;
-    }
+    // Mock login
+    const mockUser = { id: 1, name: 'John Doe', email: credentials.email };
+    const mockToken = 'mock-token';
+    localStorage.setItem('token', mockToken);
+    setUser(mockUser);
+    navigate('/dashboard');
   };
 
   const logout = () => {
@@ -51,16 +41,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signup = async (userData) => {
-    try {
-      const response = await axios.post('/api/signup', userData);
-      const { token, user } = response.data;
-      localStorage.setItem('token', token);
-      setUser(user);
-      navigate('/dashboard');
-    } catch (error) {
-      console.error('Signup error:', error);
-      throw error;
-    }
+    // Mock signup
+    const mockUser = { 
+      id: 1, 
+      name: userData.name, 
+      email: userData.email,
+      company: userData.company,
+      industry: userData.industry
+    };
+    const mockToken = 'mock-token';
+    localStorage.setItem('token', mockToken);
+    setUser(mockUser);
+    navigate('/dashboard');
   };
 
   return (
