@@ -7,8 +7,19 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-6">Welcome, {user.name}!</h1>
+      <h1 className="text-3xl font-bold mb-6">Welcome to Your Dashboard, {user.name}!</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>User Details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p><strong>Name:</strong> {user.name}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            {user.company && <p><strong>Company:</strong> {user.company}</p>}
+            {user.industry && <p><strong>Industry:</strong> {user.industry}</p>}
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Documents</CardTitle>

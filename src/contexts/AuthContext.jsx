@@ -56,15 +56,32 @@ export const AuthProvider = ({ children }) => {
   // Simulated login for development purposes
   const simulatedLogin = (credentials) => {
     console.log('Simulated login with:', credentials);
-    const fakeUser = { id: 1, name: 'John Doe', email: credentials.email };
+    const fakeUser = { 
+      id: 1, 
+      name: credentials.name || 'John Doe', 
+      email: credentials.email,
+      company: credentials.company,
+      industry: credentials.industry
+    };
     const fakeToken = 'fake-jwt-token';
     localStorage.setItem('token', fakeToken);
     setUser(fakeUser);
     navigate('/dashboard');
   };
 
+  const signup = async (userData) => {
+    try {
+      // In a real application, you would make an API call here
+      // For now, we'll use the simulated login
+      simulatedLogin(userData);
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login: simulatedLogin, logout }}>
+    <AuthContext.Provider value={{ user, login: simulatedLogin, logout, signup }}>
       {children}
     </AuthContext.Provider>
   );
